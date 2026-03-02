@@ -2,6 +2,8 @@ package ru.netology.delivery;
 
 import com.codeborne.selenide.SelenideElement;
 
+import java.time.LocalDate;
+
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -13,6 +15,7 @@ public class DeliveryPage {
     private SelenideElement phoneInput = $("[data-test-id=phone] input");
     private SelenideElement agreementCheckbox = $("[data-test-id=agreement]");
     private SelenideElement notification = $("[data-test-id=notification]");
+    private SelenideElement calendar = $(".calendar__arrow_direction_right[data-step='1']");
 
     public DeliveryPage setCity(String city) {
         cityInput.setValue(city);
@@ -21,7 +24,9 @@ public class DeliveryPage {
 
     public DeliveryPage selectCityFromAutocomplete(String city) {
         cityInput.setValue(city.substring(0, 2));
-        $$(".menu-item").findBy(text(city)).click();
+        $$(".menu-item")
+                .findBy(text(city))
+                .click();
         return this;
     }
 
@@ -32,6 +37,27 @@ public class DeliveryPage {
 
     public DeliveryPage setDate(String date) {
         dateInput.doubleClick().sendKeys(date);
+        return this;
+    }
+
+    public DeliveryPage selectDateFromCalendar(int daysToAdd) {
+
+        LocalDate targetDate = LocalDate.now().plusDays(daysToAdd);
+        String day = String.valueOf(targetDate.getDayOfMonth());
+        int currentMonth = LocalDate.now().getMonthValue();
+        int targetMonth = targetDate.getMonthValue();
+
+        dateInput.click();
+
+        if (targetMonth > currentMonth) {
+            calendar.click();
+        }
+
+        $$(".calendar__day")
+                .filterBy(visible)
+                .findBy(exactText(day))
+                .click();
+
         return this;
     }
 

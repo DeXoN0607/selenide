@@ -32,6 +32,20 @@ public class CardDeliveryTest extends BaseTest {
                 .submit()
                 .verifySuccess(meetingDate);
     }
+    
+    @Test
+    void shouldBookCardUsingCalendar() {
+        int daysToAdd = 7;
+        String meetingDate = DataGenerator.generateDate(daysToAdd);
+
+        page.setCity("Москва")
+                .selectDateFromCalendar(daysToAdd)
+                .setName("Иванов Иван")
+                .setPhone("+79991234567")
+                .acceptAgreement()
+                .submit()
+                .verifySuccess(meetingDate);
+    }
 
     @Test
     void shouldFailIfAgreementNotAccepted() {
