@@ -1,9 +1,8 @@
 package ru.netology.delivery;
 
 import com.codeborne.selenide.SelenideElement;
-
+import java.time.Duration;
 import java.time.LocalDate;
-
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -31,8 +30,8 @@ public class DeliveryPage {
     }
 
     public void verifyAgreementError() {
-        $("[data-test-id=agreement]")
-                .shouldHave(cssClass("input_invalid"));
+        $("[data-test-id=agreement].input_invalid")
+                .shouldBe(visible);
     }
 
     public DeliveryPage setDate(String date) {
@@ -41,14 +40,12 @@ public class DeliveryPage {
     }
 
     public DeliveryPage selectDateFromCalendar(int daysToAdd) {
-
         LocalDate targetDate = LocalDate.now().plusDays(daysToAdd);
         String day = String.valueOf(targetDate.getDayOfMonth());
         int currentMonth = LocalDate.now().getMonthValue();
         int targetMonth = targetDate.getMonthValue();
 
         dateInput.click();
-
         if (targetMonth > currentMonth) {
             calendar.click();
         }
@@ -83,8 +80,7 @@ public class DeliveryPage {
 
     public void verifySuccess(String expectedDate) {
         notification
-                .shouldBe(visible)
-                .shouldHave(text("Успешно"))
-                .shouldHave(text(expectedDate));
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .shouldHave(text("Встреча успешно забронирована на " + expectedDate));
     }
 }
