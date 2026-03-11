@@ -31,7 +31,8 @@ public class DeliveryPage {
 
     public void verifyAgreementError() {
         $("[data-test-id=agreement].input_invalid")
-                .shouldBe(visible);
+                .shouldBe(visible)
+                .shouldHave(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
     }
 
     public DeliveryPage setDate(String date) {

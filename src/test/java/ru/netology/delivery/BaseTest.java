@@ -9,7 +9,6 @@ public class BaseTest {
 
     @BeforeEach
     void setUp() {
-        Configuration.timeout = 15000;
         Configuration.baseUrl = "http://localhost:9999";
         open("/");
     }
